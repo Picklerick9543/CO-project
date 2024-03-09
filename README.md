@@ -1,6 +1,6 @@
 # CO-project
 Simple assembler and simulator<br>
-Author- Dipanshu Parasrampuria
-        Daksh Singh
-        Jatin Kumar
-        Avdesh Kumar Verma 
+Author- Dipanshu Parasrampuria <br>
+        Daksh Singh <br>
+        Jatin Kumar <br>
+        Avdesh Kumar Verma <br>
