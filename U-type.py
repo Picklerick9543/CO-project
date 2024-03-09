@@ -64,8 +64,6 @@ for line in fhand:
     register = a[1]
     dest_reg = register.split(',')[0].strip()
     immediate = int(register.split(',')[1].strip())
-    # src_reg1 = register.split(',')[1].strip()
-    # src_reg2 = register.split(',')[2].strip()
 
     if instruction not in dict_opcode:
         print(f"instruction '{instruction}' not recognised.")
