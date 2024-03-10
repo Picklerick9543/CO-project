@@ -80,7 +80,11 @@ with open("first.txt",'r+') as f:
             break
         if opcode not in dict_opcode:
             print(f"Error line {i} : Opcode '{opcode}' is not recognised.")
+        
         def imm(n):
+            
+            if i > 980:
+                return '0'
             binary = ''
             if n == 0:
                 return '0' * 20
@@ -91,9 +95,13 @@ with open("first.txt",'r+') as f:
                     binary = str(n % 2) + binary
                     n = n // 2
                 return binary.zfill(20)
-
+        value = 0
+        if int(n) >= (-525288) and int(n) <= 524287:
+            value = str(imm(n))
+        else:
+            print(f"Erro: line {i} immediate value is out of range.")
+            break
         
-        value = str(imm(n))
         new_value = value[0]+value[9:19]+ value[9] + value[1:9]
         x = new_value +" "+ dict_reg[register] +" "+ dict_opcode[opcode]
         print(x)

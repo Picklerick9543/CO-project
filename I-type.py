@@ -127,7 +127,13 @@ with open("first.txt",'r+') as f:
                     binary=str(n%2) + binary
                     n= n//2
                 return binary.zfill(11)
-        value = imm(int(n))
+        value = 0
+        if int(n) >= (-525288) and int(n) <= 524287:
+            value = (imm(n))
+        else:
+            print(f"Erro: line {i} immediate value is out of range.")
+            break
+        
         
         immediate = ''
         if(int(n)<0):
