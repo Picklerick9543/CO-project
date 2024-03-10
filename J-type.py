@@ -48,6 +48,9 @@ with open("first.txt",'r+') as f:
             print(f"Error: line {i} contains syntax error.")
             break
         ln = line.split()
+        if len(ln)<2:
+            print(f"Error: line {i} has syntax error.")
+            break
         take = ln[1].split(',')
         m = 1
         for j in take:
@@ -58,9 +61,10 @@ with open("first.txt",'r+') as f:
             m += 1
         
         register = ln[1]
-        if len(ln)<2:
-            print(f"Error: line {i} has syntax error.")
+        if register not in dict_reg:
+            print(f"Error line {i} has unathuorised register.")
             break
+        
         opcode = ln[0]
         if ln[2] == '':
             print(f"Error: line {i} has no label or immediate value.")
@@ -69,10 +73,10 @@ with open("first.txt",'r+') as f:
         try:
             n = int(ln[2])
         except:
-            print(f"Error immediate value is not integer.")
+            print(f"Error line {i} : immediate value is not integer.")
             break
         if opcode not in dict_opcode:
-            print(f"Opcode '{opcode}' is not recognised.")
+            print(f"Error line {i} : Opcode '{opcode}' is not recognised.")
         def imm(n):
             binary = ''
             if n == 0:
