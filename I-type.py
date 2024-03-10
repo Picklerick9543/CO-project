@@ -52,13 +52,20 @@ i = 0
 with open("first.txt",'r+') as f:
     for line in f:
         i += 1
+        if line == " ":
+            print(f"Error : line {i} has empty line.")
+            continue
         if not line.strip():
             continue
         ln = line.split()
-        
+        if len(ln)<2:
+            print(f"Error: line {i} has syntax error.")
+            break
         take = ln[1].split(',')
         m = 1
-       
+        if ',' not in line:
+            print(f"Error: line {i} has syntax error.")
+            break
         for j in take:
             if m == 1:
                 ln[1] = j
@@ -66,12 +73,10 @@ with open("first.txt",'r+') as f:
                 ln.append(j)
             m += 1
         
-        if(len(ln)<3):
-            print(f"Error : line {i} have something syntax issue.")
-            break
+        
         opcode = ln[0]
         if opcode not in dict_opcode:
-            print(f"Opcode '{opcode}' is not recoginised. ")
+            print(f"Error line {i} : Opcode '{opcode}' is not recoginised. ")
             break
         n = ''
         register = ""
@@ -84,15 +89,33 @@ with open("first.txt",'r+') as f:
                 else:
                     n += s
                 j += 1
+            if(len(take)<2) :
+                print(f"Error : line {i} have something syntax issue.")
+                break
+            if register == '':
+                print(f"Error line : {i} has syntax error.")
+                break
         else:
+            if(len(take)<3) :
+                print(f"Error : line {i} have something syntax issue.")
+                break
             n = ln[3]
             register = ln[2]
+            
         dest_reg = ln[1]
+  
 
+        try:
+            n = int(n)
+        except:
+            print(f"Error : line {i} immediate value is not integer or not provided.")
+            break
         if dest_reg  not in dict_registers:
-            print(f"Error : Register '{dest_reg}' is not recoginised")
+            print(f"Error line {i} : destination Register '{dest_reg}' is not recoginised")
+            break
         if register not in dict_registers:
-            print(f"Error : Register '{dest_reg}' is not recoginised")
+            print(f"Error line {i} : Register '{register}' is not recoginised")
+            break
         def imm(n):
             binary = ''
             if int(n) == 0:

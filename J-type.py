@@ -42,6 +42,9 @@ with open("first.txt",'r+') as f:
     i = 0
     for line in f:
         i += 1
+        if line == " ":
+            print(f"Error : line {i} has empty line.")
+            continue
         if not line.strip():
             continue
         if ',' not in line:
