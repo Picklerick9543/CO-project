@@ -537,24 +537,25 @@ def code_U(line):
     def imm(n):
         binary = ''
         if int(n) == 0:
-            return '0' * 20
+            return '0' * 32
         elif int(n) < 0:
-            return(imm(2**20 + n)[:])
+            return(imm(2**32 + n)[:])
         else:
             while(n>0):
                 binary=str(n%2) + binary
                 n= n//2
-            return binary.zfill(20)
+            return binary.zfill(32)
 
     if int(n) >= (-1048576) and int(n) <= 1048575:
         value = (imm(n))
+        
     else:
         u.close()
         with open("output.txt","r+") as m:
             m.write(f"Error: line {i} immediate value is out of range.")
         m.close()
         exit(0)
-    x = str(value) +" "+ dict_registers[register] + " "+dict_opcode_U[instruction] 
+    x = str(value)[0:20] +" "+ dict_registers[register] + " "+dict_opcode_U[instruction] 
     
     u.write(str(x)+'\n')
 
