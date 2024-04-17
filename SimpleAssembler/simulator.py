@@ -458,6 +458,40 @@ def B_type(line,pc,opcode):
     u.write("\n")
     return pc
 
+
+def special_case(opcode,line,pc):
+    pc += 4
+    funct3 = line[17:20]
+    src_reg_1 = line[12:17]
+    src_reg_2 = line[7:12]
+    dest_reg = line[20:25]
+    string_src_reg_1 = dict_registers[src_reg_1]
+    string_src_reg_2 = dict_registers[src_reg_2]
+    string_dest_reg = dict_registers[dest_reg]
+    if(funct3 == "000"):
+        get_val = dict_registers_content_decimal[string_src_reg_1] * dict_registers_content_decimal[string_src_reg_2]
+        string_val = decimal_to_binary(get_val,32)
+        real_val = binary_to_decimal(get_val)
+        dict_registers_content_decimal[string_dest_reg] = real_val
+    elif(funct3 == "001"):
+        for i in temp_list:
+            dict_registers_content_decimal[i] = 0
+    elif(funct3 == "010"):
+        exit(0)
+    elif(funct3 == "011"):
+        src_con = dict_registers_content_decimal[string_src_reg_1]
+        dest_con = dict_registers_content_decimal[string_dest_reg]
+        dict_registers_content_decimal[string_dest_reg] = src_con
+        dict_registers_content_decimal[string_src_reg_1] = dest_con
+    temp = (decimal_to_binary(pc*4,32))
+    u.write("0b"+temp)
+    for i in temp_list:
+        u.write(" ")
+        take = (decimal_to_binary(dict_registers_content_decimal[i],32))
+        u.write("0b"+take)
+    u.write("\n")
+    return pc
+
 keep_track = {}
 
 line_list = []
@@ -484,6 +518,8 @@ for i in range(len(line_list)):
         pc = I_type(line,pc,opcode)
     elif(opcode == "1100011" and keep_track[line]):
         pc = B_type(line,pc,opcode)
+    elif(opcode == "1101111" ):
+        pc = special_case(opcode,line,pc)
 for i in memory_map:
     address = i 
     address_val  = decimal_to_binary(memory_map[i],32)
