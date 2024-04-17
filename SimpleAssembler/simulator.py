@@ -469,7 +469,6 @@ with open("take.txt", "r") as file:
             keep_track[line] = True
 pc = 0
 for i in range(len(line_list)):
-    print(pc)
     line = line_list[pc]
     
     opcode = line[25:32]
@@ -485,4 +484,8 @@ for i in range(len(line_list)):
         pc = I_type(line,pc,opcode)
     elif(opcode == "1100011" and keep_track[line]):
         pc = B_type(line,pc,opcode)
-
+for i in memory_map:
+    address = i 
+    address_val  = decimal_to_binary(memory_map[i],32)
+    u.write(address + " " + address_val)
+    u.write("\n")
