@@ -287,7 +287,7 @@ def do_worK(opcode,pick,pc):
     elif instruction == "sll":
         temp_reg_2 = decimal_to_binary(value_reg2,32)
        
-        ans = binary_to_decimal(temp_reg_2[27:32])
+        ans = binary_to_decimal(temp_reg_2[28:32])
         value_dest_reg = value_reg1<<abs(ans)
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
 
@@ -308,7 +308,7 @@ def do_worK(opcode,pick,pc):
 
     if instruction == "srl":
         temp_reg_2 = decimal_to_binary(value_reg2,32)
-        ans = binary_to_decimal(temp_reg_2[27:32])
+        ans = binary_to_decimal(temp_reg_2[28:32])
         value_dest_reg = value_reg1>>abs(ans)
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
         
