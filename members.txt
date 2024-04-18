@@ -1,0 +1,6 @@
+# Memeber--
+Simple assembler and simulator<br>
+Avdhesh Kumar Verma (Roll No -- 2023158)<br>
+Jatin Kumar (Roll No -- 2023260) <br>
+Deepanshu Parasrampuria (Roll No -- 2023204) <br>
+Daksh Singh (Roll No -- 2023180)
