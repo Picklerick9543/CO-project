@@ -1,3 +1,4 @@
+u = open("output.txt",'w+')
 dict_registers = {
     "00000": "zero",
     "00001": "ra",
@@ -206,7 +207,7 @@ def decimal_to_hexadecimal(decimal_number):
     return hexadecimal_string
 
 def S_type(instruction,pc):
-    pc += 1
+    pc += 4
     keep_track[line] = False
     imme_1 = instruction[0:7]
     imme_2 = instruction[20:25]
@@ -223,7 +224,7 @@ def S_type(instruction,pc):
     string_dest_register = dict_registers[dest_registers]
     value_dest_reg = dict_registers_content_decimal[string_dest_register]
     memory_map[mem_address] = value_dest_reg
-    temp = (decimal_to_binary(pc*4,32))
+    temp = (decimal_to_binary(pc,32))
     u.write("0b"+temp)
     for i in temp_list:
         u.write(" ")
@@ -233,7 +234,7 @@ def S_type(instruction,pc):
     return pc
     
 def U_type(line,pc):
-    pc += 1
+    pc += 4
     keep_track[line] = False
     opcode = line[25:32]
     imme = line[0:21]
@@ -244,7 +245,7 @@ def U_type(line,pc):
         dict_registers_content_decimal[string_src_register] = binary_to_decimal(imme)
     else:
         dict_registers_content_decimal[string_src_register] = pc + binary_to_decimal(imme)
-    temp = (decimal_to_binary(pc*4,32))
+    temp = (decimal_to_binary(pc,32))
     u.write("0b"+temp)
     for i in temp_list:
         u.write(" ")
@@ -257,9 +258,9 @@ def bitwise_xor(decimal1, decimal2):
     # Perform bitwise XOR operation on decimal numbers
     result = decimal1 ^ decimal2
     return result
-u = open("output.txt",'w+')
+
 def do_worK(opcode,pick,pc):
-    pc += 1
+    pc += 4
     keep_track[line] = False
     funtval = pick[17:20]
     instruction = dict_func3_R[funtval]
@@ -322,7 +323,7 @@ def do_worK(opcode,pick,pc):
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
         
     
-    temp = (decimal_to_binary(pc*4,32))
+    temp = (decimal_to_binary(pc,32))
     u.write("0b"+temp)
     for i in temp_list:
         u.write(" ")
@@ -332,6 +333,7 @@ def do_worK(opcode,pick,pc):
     return pc
 
 def J_type(line,pc):
+    keep_track[line] = False
     imme = ""
     opcode = line[25:32]
     dest_reg = line[20:25]
@@ -348,7 +350,7 @@ def J_type(line,pc):
     pc = binary_to_decimal(imme_bin)
     pc += binary_to_decimal(sign_extend(imme))
     
-    temp = (decimal_to_binary(pc*4,32))
+    temp = (decimal_to_binary(pc,32))
     
     u.write("0b"+temp)
     for i in temp_list:
@@ -385,7 +387,7 @@ def sign_extend(binary_num):
 
 def I_type(line,pc,opcode):
     keep_track[line] = False
-    pc += 1
+    pc += 4
     imme = line[0:12]
     funct3 = line[17:20]
     dest_reg = line[20:25]
@@ -411,7 +413,7 @@ def I_type(line,pc,opcode):
         imme_bin += "0"
         pc = binary_to_decimal(imme_bin)
         pc = dict_registers_content_decimal[string_src_reg] + binary_to_decimal(sign_extend(imme))
-    temp = (decimal_to_binary(pc*4,32))
+    temp = (decimal_to_binary(pc,32))
     u.write("0b"+temp)
     for i in temp_list:
         u.write(" ")
@@ -423,6 +425,7 @@ def I_type(line,pc,opcode):
 
 
 def B_type(line,pc,opcode):
+    temp = pc
     keep_track[line] = False
     imm_binary = ""
     imm_binary = imm_binary + line[0]
@@ -436,20 +439,23 @@ def B_type(line,pc,opcode):
     string_src_1 = dict_registers[src_reg_1]
     string_src_2 = dict_registers[src_reg_2]
     if(dict_registers_content_decimal[string_src_1] == dict_registers_content_decimal[string_src_2]):
-        pc += (binary_to_decimal(sign_extend(imm_binary)))
+        temp += (binary_to_decimal(sign_extend(imm_binary)))
         
     elif(dict_registers_content_decimal[string_src_1] != dict_registers_content_decimal[string_src_2]):
-        pc += (binary_to_decimal(sign_extend(imm_binary)))
+        temp += (binary_to_decimal(sign_extend(imm_binary)))
     elif(dict_registers_content_decimal[string_src_1] >= dict_registers_content_decimal[string_src_2]):
-        pc += (binary_to_decimal(sign_extend(imm_binary)))
+        temp += (binary_to_decimal(sign_extend(imm_binary)))
     elif(abs(dict_registers_content_decimal[string_src_1]) >= abs(dict_registers_content_decimal[string_src_2])):
-        pc += (binary_to_decimal(sign_extend(imm_binary)))
+        temp += (binary_to_decimal(sign_extend(imm_binary)))
     elif(dict_registers_content_decimal[string_src_1] < dict_registers_content_decimal[string_src_2]):
-        pc += (binary_to_decimal(sign_extend(imm_binary)))
-    elif(abs(dict_registers_content_decimal[string_src_1] )< abs(dict_registers_content_decimal[string_src_2])):
-        pc += (binary_to_decimal(sign_extend(imm_binary)))
+        temp += (binary_to_decimal(sign_extend(imm_binary)))
+    elif(abs(dict_registers_content_decimal[string_src_1] ) < abs(dict_registers_content_decimal[string_src_2])):
+        temp += (binary_to_decimal(sign_extend(imm_binary)))
+    if(temp == pc):
+        temp += 4
+    pc = temp
     
-    temp = (decimal_to_binary(pc*4,32))
+    temp = (decimal_to_binary(pc,32))
     u.write("0b"+temp)
     for i in temp_list:
         u.write(" ")
@@ -460,6 +466,7 @@ def B_type(line,pc,opcode):
 
 
 def special_case(opcode,line,pc):
+    keep_track[line] = False
     pc += 4
     funct3 = line[17:20]
     src_reg_1 = line[12:17]
@@ -491,7 +498,6 @@ def special_case(opcode,line,pc):
         u.write("0b"+take)
     u.write("\n")
     return pc
-
 keep_track = {}
 
 line_list = []
@@ -503,7 +509,8 @@ with open("take.txt", "r") as file:
             keep_track[line] = True
 pc = 0
 for i in range(len(line_list)):
-    line = line_list[pc]
+    print(pc)
+    line = line_list[pc//4]
     
     opcode = line[25:32]
     if(opcode == "0100011" and keep_track[line]):
@@ -520,8 +527,10 @@ for i in range(len(line_list)):
         pc = B_type(line,pc,opcode)
     elif(opcode == "1101111" ):
         pc = special_case(opcode,line,pc)
+
 for i in memory_map:
     address = i 
     address_val  = decimal_to_binary(memory_map[i],32)
     u.write(address + " " + address_val)
     u.write("\n")
+u.close()
