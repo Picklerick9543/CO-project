@@ -509,7 +509,6 @@ with open("take.txt", "r") as file:
             keep_track[line] = True
 pc = 0
 for i in range(len(line_list)):
-    print(pc)
     line = line_list[pc//4]
     
     opcode = line[25:32]
