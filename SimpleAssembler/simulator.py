@@ -280,7 +280,7 @@ def do_worK(opcode,pick,pc):
         value_dest_reg = value_reg1 + value_reg2
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
 
-    if instruction == "sub":
+    elif instruction == "sub":
         value_dest_reg = value_reg1 - value_reg2
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
 
@@ -291,34 +291,34 @@ def do_worK(opcode,pick,pc):
         value_dest_reg = value_reg1<<abs(ans)
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
 
-    if instruction == "slt":
+    elif instruction == "slt":
         if(value_reg1 < value_reg2):
             value_dest_reg = 1
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
 
-    if instruction == "sltu":
+    elif instruction == "sltu":
         if(abs(value_reg1)< abs(value_reg2)):
             value_dest_reg = 1
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
 
-    if instruction == "xor":
+    elif instruction == "xor":
         value_dest_reg = bitwise_xor(value_reg1,value_reg2)
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
        
 
-    if instruction == "srl":
+    elif instruction == "srl":
         temp_reg_2 = decimal_to_binary(value_reg2,32)
         ans = binary_to_decimal(temp_reg_2[28:32])
         value_dest_reg = value_reg1>>abs(ans)
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
         
 
-    if instruction == "or":
+    elif instruction == "or":
         value_dest_reg = value_reg1 | value_reg2
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
        
 
-    if instruction == "and":
+    elif instruction == "and":
         value_dest_reg = value_reg1 & value_reg2
         dict_registers_content_decimal[string_dest_reg] = value_dest_reg
         
