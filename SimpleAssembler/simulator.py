@@ -259,7 +259,7 @@ def bitwise_xor(decimal1, decimal2):
     result = decimal1 ^ decimal2
     return result
 
-def do_worK(opcode,pick,pc):
+def R_worK(opcode,pick,pc):
     pc += 4
     keep_track[line] = False
     funtval = pick[17:20]
@@ -427,6 +427,7 @@ def I_type(line,pc,opcode):
 def B_type(line,pc,opcode):
     temp = pc
     keep_track[line] = False
+
     imm_binary = ""
     imm_binary = imm_binary + line[0]
     imm_binary = imm_binary + line[24]
@@ -438,23 +439,25 @@ def B_type(line,pc,opcode):
     src_reg_2 = line[7:12]
     string_src_1 = dict_registers[src_reg_1]
     string_src_2 = dict_registers[src_reg_2]
+    ans_to_find = sign_extend(imm_binary)[0:31]
+    ans_to_find += '0'
     if(dict_registers_content_decimal[string_src_1] == dict_registers_content_decimal[string_src_2]):
-        temp += (binary_to_decimal(sign_extend(imm_binary)))
+        temp += (binary_to_decimal(ans_to_find))
         
     elif(dict_registers_content_decimal[string_src_1] != dict_registers_content_decimal[string_src_2]):
-        temp += (binary_to_decimal(sign_extend(imm_binary)))
+        temp += (binary_to_decimal(ans_to_find))
     elif(dict_registers_content_decimal[string_src_1] >= dict_registers_content_decimal[string_src_2]):
-        temp += (binary_to_decimal(sign_extend(imm_binary)))
+        temp += (binary_to_decimal(ans_to_find))
     elif(abs(dict_registers_content_decimal[string_src_1]) >= abs(dict_registers_content_decimal[string_src_2])):
-        temp += (binary_to_decimal(sign_extend(imm_binary)))
+        temp += (binary_to_decimal(ans_to_find))
     elif(dict_registers_content_decimal[string_src_1] < dict_registers_content_decimal[string_src_2]):
-        temp += (binary_to_decimal(sign_extend(imm_binary)))
+        temp += (binary_to_decimal(ans_to_find))
     elif(abs(dict_registers_content_decimal[string_src_1] ) < abs(dict_registers_content_decimal[string_src_2])):
-        temp += (binary_to_decimal(sign_extend(imm_binary)))
+        temp += (binary_to_decimal(ans_to_find))
     if(temp == pc):
-        temp += 4
-    pc = temp
-    
+        pc += 4
+    else:
+        pc = temp
     temp = (decimal_to_binary(pc,32))
     u.write("0b"+temp)
     for i in temp_list:
@@ -510,12 +513,11 @@ with open("take.txt", "r") as file:
 pc = 0
 for i in range(len(line_list)):
     line = line_list[pc//4]
-    
     opcode = line[25:32]
     if(opcode == "0100011" and keep_track[line]):
         pc = S_type(line,pc)
     elif(opcode == "0110011" and keep_track[line]):
-        pc = do_worK(opcode,line,pc)
+        pc = R_worK(opcode,line,pc)
     elif (opcode == "0010111" or opcode == "0110111"and keep_track[line]):
         pc = U_type(line,pc)
     elif(opcode == "1101111"):
@@ -533,3 +535,4 @@ for i in memory_map:
     u.write(address + " " + address_val)
     u.write("\n")
 u.close()
+
